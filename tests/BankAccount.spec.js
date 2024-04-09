@@ -83,6 +83,7 @@ describe("Bank Account", () => {
     (withdrawal, balance) => {
       account.type = "checking";
       account.balance = balance;
+      
       const resultWithdraw = () => {
         account.withdraw(withdrawal);
       };
