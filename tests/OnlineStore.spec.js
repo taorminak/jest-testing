@@ -31,4 +31,55 @@ describe("Online Store", () => {
       expect(products).toContain(addedProduct);
     }
   );
+
+  const searchedProducts = [
+    { productId: 29, name: "Valorian", price: 20.55 },
+    { productId: 17, price: 29.99, name: "Theft Auto" },
+    { price: 17.89, productId: 190, name: "League of Legends" },
+  ];
+  it.each(searchedProducts)(
+    "should retrieve the information about the product",
+    (searchedProduct) => {
+      products.push(searchedProduct);
+      const id = searchedProduct.productId;
+
+      const result = onlineStore.getProduct(id);
+
+      expect(result).toEqual(searchedProduct);
+    }
+  );
+
+  const productsList = [
+    { productId: 99, name: "Minecraft", price: 70.55 },
+    { productId: 87, price: 26.69, name: "Call of Duty" },
+    { price: 133.89, productId: 40, name: "Fortnite" },
+  ];
+  it("should throw a new error if there is no such product in the list", () => {
+    const absentProduct = { price: 93.89, productId: 2, name: "Super Mario" };
+    productsList.forEach(product => products.push(product));
+
+    const resultGetProduct = () => {
+      onlineStore.getProduct(absentProduct.productId);
+    };
+
+    expect(resultGetProduct).toThrow("Product not found");
+  });
+
+
+  const orderParamsList = [
+    [23, 99, 5],
+    [32, 87, 2],
+    [49, 40, 6]
+  ];
+  
+  it.each(orderParamsList)("should process an order with orderId: %i, productId: %i, and quantity: %i", (orderId, productId, quantity) => {
+    const initialOrdersList = orders.length;
+    productsList.forEach(product => products.push(product));
+
+    onlineStore.processOrder(orderId, productId, quantity);
+
+    expect(orders).toHaveLength(initialOrdersList + 1);
+  });
+
+
 });
