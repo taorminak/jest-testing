@@ -74,12 +74,70 @@ describe("Online Store", () => {
   
   it.each(orderParamsList)("should process an order with orderId: %i, productId: %i, and quantity: %i", (orderId, productId, quantity) => {
     const initialOrdersList = orders.length;
-    productsList.forEach(product => products.push(product));
+    // productsList.forEach(product => products.push(product));
+    onlineStore.products = [...productsList];
 
     onlineStore.processOrder(orderId, productId, quantity);
 
     expect(orders).toHaveLength(initialOrdersList + 1);
   });
+
+  const ordersList = [
+    {
+        orderId: 1,
+        productId: 101,
+        productName: "Call of Duty",
+        quantity: 2,
+        totalPrice: 500 
+    },
+    {
+        orderId: 2,
+        productId: 102,
+        productName: "Minecraft",
+        quantity: 1,
+        totalPrice: 1200 
+    },
+    {
+        orderId: 3,
+        productId: 103,
+        productName: "Super Mario",
+        quantity: 3,
+        totalPrice: 100
+    }
+];
+
+const ordersParamsList = [1, 2, 3];
+
+  it.each(ordersParamsList)(
+    "should retrieve the information about the order",
+    (orderParams) => {
+        onlineStore.orders = [...ordersList];
+
+      const result = onlineStore.getOrder(orderParams);
+
+      expect(onlineStore.orders).toContain(result);
+    }
+  );
+
+  it("should throw a new error if there is no such order", () => {
+    const absentOrder = {
+        orderId: 100,
+        productId: 1000,
+        productName: "No game",
+        quantity: 3,
+        totalPrice: 3
+    };
+
+    onlineStore.orders = [...ordersList];
+
+    const resultGetOrder = () => {
+      onlineStore.getOrder(absentOrder.orderId);
+    };
+
+    expect(resultGetOrder).toThrow("Order not found");
+  });
+
+
 
 
 });
