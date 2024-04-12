@@ -9,19 +9,30 @@ describe("Bank Account", () => {
 
   describe("Account initialization", () => {
     it("should initialize with a zero balance", () => {
-      const balance = account.balance;
+      const zeroBalance = 0;
 
-      expect(balance).toBe(0);
+      expect(account.balance).toBe(zeroBalance);
     });
 
     const accountTypes = ["checking", "savings"];
-    it.each(accountTypes)("should initialize with the correct type", (type) => {
-      account = new BankAccount(type);
-      const accountType = account.type;
+    describe.each(accountTypes)("Account type initialization", (type) => {
+      let typeSpecificAccount;
 
-      expect(accountType).toMatch(/^(checking|savings)$/);
+      beforeEach(() => {
+        typeSpecificAccount = new BankAccount(type);
+      });
+
+      it(`should be a ${type} type account`, () => {
+        expect(typeSpecificAccount.type).toMatch(/^(checking|savings)$/);
+      });
+
+      it("should initialize with a zero balance", () => {
+        const zeroBalance = 0;
+
+        expect(typeSpecificAccount.balance).toBe(zeroBalance);
+      });
     });
-  });
+ 
 
   describe("Deposit", () => {
     const addedAmounts = [1000, 500, 1235.5];
@@ -35,8 +46,8 @@ describe("Bank Account", () => {
       expect(account.balance).toBe(expectedBalance);
     });
 
-    const negativeAmounts = [-100, -509, -0.01, "hundred"];
-    it.each(negativeAmounts)(
+    const invalidAmounts = [-100, -509, -0.01, "hundred"];
+    it.each(invalidAmounts)(
       "should throw a new error when provided with a negative amount for deposit or when the amount is not a number",
       (amount) => {
         const resultAddDeposit = () => {
@@ -75,8 +86,8 @@ describe("Bank Account", () => {
       }
     );
 
-    const negativeWithdrawals = [-160, -9, -0.0451, true];
-    it.each(negativeWithdrawals)(
+    const invalidWithdrawals = [-160, -9, -0.0451, true, undefined];
+    it.each(invalidWithdrawals)(
       "should throw a new error when a withdrawl has a negative value or when the value is not a number",
       (withdrawal) => {
         const resultWithdraw = () => {
@@ -195,4 +206,5 @@ describe("Bank Account", () => {
       }
     );
   });
+});
 });
