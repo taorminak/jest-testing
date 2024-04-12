@@ -10,7 +10,7 @@ describe("Online Store", () => {
     orders = onlineStore.orders;
   });
 
-  describe("Account initialization", () => {
+  describe("Online Store initialization", () => {
     it("should initialize with an empty products list", () => {
       expect(products).toHaveLength(0);
     });

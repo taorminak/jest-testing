@@ -162,6 +162,9 @@ describe("Bank Account", () => {
       );
 
       describe("Checking Account", () => {
+        beforeEach(() => {
+          account = new BankAccount("checking");
+        });
         const withdrawalsFromChecking = [
           [1501, 1500],
           [500, 88],
@@ -170,7 +173,6 @@ describe("Bank Account", () => {
         it.each(withdrawalsFromChecking)(
           "should throw a new error when a type od account is checking and the withdrawal is bigger than balance",
           (withdrawal, balance) => {
-            account.type = "checking";
             account.balance = balance;
 
             const resultWithdraw = () => {
@@ -183,21 +185,23 @@ describe("Bank Account", () => {
       });
 
       describe("Savings Account", () => {
+        beforeEach(() => {
+          account = new BankAccount("savings");
+        });
         const overdraftWithdrawalsFromSavings = [
           [100, 50],
-          [90, 0],
-          [100, 0],
+          [90, 10],
+          [200, 155],
         ];
         it.each(overdraftWithdrawalsFromSavings)(
           "should allow withdrawing an amount greater than balance with savings account overdraft",
           (withdrawal, balance) => {
-            account.type = "savings";
             account.balance = balance;
             const initialBalance = account.balance;
 
             account.withdraw(withdrawal);
-            const expectedBalance = initialBalance - withdrawal;
 
+            const expectedBalance = initialBalance - withdrawal;
             expect(account.balance).toBe(expectedBalance);
           }
         );
@@ -210,7 +214,6 @@ describe("Bank Account", () => {
         it.each(withdrawalsFromSavings)(
           "should throw a new error when a type of account is savings and the withdrawal is bigger than balance plus 100",
           (withdrawal, balance) => {
-            account.type = "savings";
             account.balance = balance;
 
             const resultWithdraw = () => {
