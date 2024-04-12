@@ -92,7 +92,7 @@ describe("Ice Cream Tracker", () => {
       expect(result).toMatch(/exceeded your ice cream intake goal/);
     }
   );
-  
+
   const iceCreamParamsList = [
     [{ flavor: "cookie dough", calorieCount: 351 }, 351],
     [{ flavor: "toffee", calorieCount: 298 }, 298],
@@ -105,14 +105,15 @@ describe("Ice Cream Tracker", () => {
 
       let result = iceCreamTracker.getRecommendation(goalCalories);
 
-      expect(result).toMatch("You have reached your ice cream intake goal for the day.");
+      expect(result).toMatch(
+        "You have reached your ice cream intake goal for the day."
+      );
     }
   );
 
-
   const highGoalCaloriesList = [1280, 1500, 1600];
   it.each(highGoalCaloriesList)(
-    "should provide a message about reaching the exact calories",
+    "should provide a message about remaining calories for the goal",
     (goalCalories) => {
       iceCreamTracker.consumedIceCreams = [...iceCreamsList];
 
@@ -121,5 +122,4 @@ describe("Ice Cream Tracker", () => {
       expect(result).toMatch(/calories remaining for your ice cream goal/);
     }
   );
- 
 });
