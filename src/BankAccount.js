@@ -6,7 +6,7 @@ class BankAccount {
 
   // Deposit funds into the account
   deposit(amount) {
-    if (typeof amount !== "number" || amount <= 0) {
+    if (typeof amount !== "number" || amount <= 0) { //doesn't throw an error when is NaN
       throw new Error("Invalid deposit amount");
     }
     this.balance += amount;
