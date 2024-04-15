@@ -13,6 +13,13 @@ describe("Reservation", () => {
 
       expect(reservation.status).toBe(expectedStatus);
     });
+
+    it(`should initialize with a string type`, () => {
+      let type = reservation.status;
+      const typeString = "string";
+
+      expect(typeof type).toBe(typeString);
+    });
   });
 
   describe("Making reservation", () => {
