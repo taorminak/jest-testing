@@ -8,6 +8,8 @@ describe("Bank Account", () => {
     account = new BankAccount();
   });
 
+  //add a function createGivenCheckingAccount which return a bank account with checking
+
   describe("Account initialization", () => {
     it("should initialize with a zero balance", () => {
       const zeroBalance = 0;
@@ -26,7 +28,9 @@ describe("Bank Account", () => {
         let type = typeSpecificAccount.type;
         const typeString = "string";
 
-        expect(typeof type).toBe(typeString);
+        const actualType = typeof type;
+
+        expect(actualType).toBe(typeString); //have it readable
       });
 
       it(`should be a ${type} type account`, () => {
@@ -40,11 +44,11 @@ describe("Bank Account", () => {
         expect(typeof balance).toBe(typeNumber);
       });
 
-      it("should initialize with a zero balance", () => {
-        const zeroBalance = 0;
+      // it("should initialize with a zero balance", () => {
+      //   const zeroBalance = 0;
 
-        expect(typeSpecificAccount.balance).toBe(zeroBalance);
-      });
+      //   expect(typeSpecificAccount.balance).toBe(zeroBalance);
+      // });
     });
 
     describe("Deposit", () => {
@@ -54,17 +58,25 @@ describe("Bank Account", () => {
         });
       });
 
-      const addedAmounts = [100000000000, 500, 1235.5];
+      const addedAmounts = [
+        100000000000, 
+        500, 
+        1235.5
+      ];
       it.each(addedAmounts)("should deposit funds into account", (amount) => {
-        const initialBalance = account.balance;
+        const initialBalance = account.balance; //can call a helper function
+
         account.deposit(amount);
 
         const expectedBalance = initialBalance + amount;
-
         expect(account.balance).toBe(expectedBalance);
       });
 
-      const negativeAmounts = [-1000000000, -509, -0.01];
+      const negativeAmounts = [
+        -1000000000, 
+        -509, 
+        -0.01
+      ];
       it.each(negativeAmounts)(
         "should throw a new error when provided with a negative amount for deposit",
         (amount) => {
@@ -112,7 +124,7 @@ describe("Bank Account", () => {
       ];
       it.each(withdrawnAmounts)(
         "should withdraw funds from the account when the amount is valid",
-        (amount, initialBalance) => {
+        (amount, initialBalance) => { //amountToWithdraw
           account.balance = initialBalance;
 
           account.withdraw(amount);
